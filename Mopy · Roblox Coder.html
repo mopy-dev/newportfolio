@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mopy · Roblox Coder</title>
+<meta property="og:title" content="Mopy · Roblox Coder">
+<meta property="og:description" content="Roblox scripter, QA and acquisitions. 7+ years of Luau, 11M+ visits, open to work.">
+<meta property="og:image" content="https://i.imgur.com/BzaB5pM.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b08;--pn:#0c130e;--pn2:#101a13;--tx:#cfe8d6;--mut:#6f8f79;--ac:#3dffa0;--ac2:#7dd3fc;--am:#ffb86c;--er:#ff5f57;--line:#3dffa028;--bar:rgba(7,11,8,.88);--ink:#04110a;
+--m:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f1f6f2;--pn:#fff;--pn2:#eaf3ed;--tx:#14261b;--mut:#52705d;--ac:#0a7a44;--ac2:#0b6aa0;--am:#a35a00;--er:#c62828;--line:#0a7a4430;--bar:rgba(241,246,242,.9);--ink:#fff;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#070b08;--pn:#0c130e;--pn2:#101a13;--tx:#cfe8d6;--mut:#6f8f79;--ac:#3dffa0;--ac2:#7dd3fc;--am:#ffb86c;--er:#ff5f57;--line:#3dffa028;--bar:rgba(7,11,8,.88);--ink:#04110a;color-scheme:dark}
+:root[data-theme="light"]{--bg:#f1f6f2;--pn:#fff;--pn2:#eaf3ed;--tx:#14261b;--mut:#52705d;--ac:#0a7a44;--ac2:#0b6aa0;--am:#a35a00;--er:#c62828;--line:#0a7a4430;--bar:rgba(241,246,242,.9);--ink:#fff;color-scheme:light}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{background:var(--bg);color:var(--tx);font:400 15px/1.7 var(--m);overflow-x:hidden}
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:var(--bar);backdrop-filter:blur(14px);z-index:210}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:150;background:repeating-linear-gradient(0deg,rgba(0,0,0,.07) 0 1px,transparent 1px 3px);opacity:.5}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ac);color:var(--ink)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+#rain{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.16;pointer-events:none}
+/* boot */
+#boot{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;padding:2rem clamp(1rem,6vw,5rem);transition:opacity .6s,visibility .6s;cursor:pointer}
+#boot.off{opacity:0;visibility:hidden}
+#boot div{opacity:0;animation:in .2s forwards}@keyframes in{to{opacity:1}}
+.ok{color:var(--ac)}
+/* chrome */
+#top{position:fixed;top:0;left:0;right:0;z-index:200;padding:calc(.6rem + env(safe-area-inset-top,0px)) clamp(.8rem,3vw,2rem) .6rem;display:flex;align-items:center;gap:1rem;background:var(--bar);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.dots{display:flex;gap:.4rem}.dots i{width:11px;height:11px;border-radius:50%;display:block}
+.ttl{font-size:.78rem;color:var(--mut);white-space:nowrap}.ttl b{color:var(--ac);font-weight:500}
+#top nav{margin-left:auto;display:flex;gap:1.2rem;overflow-x:auto;scrollbar-width:none}
+#top nav a{font-size:.78rem;color:var(--mut);white-space:nowrap;position:relative;padding:.1rem 0;transition:color .2s}
+#top nav a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--ac);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+#top nav a:hover,#top nav a.on{color:var(--ac)}#top nav a:hover::after,#top nav a.on::after{transform:scaleX(1)}
+#th{background:none;border:1px solid var(--line);color:var(--mut);border-radius:.3rem;width:28px;height:26px;cursor:pointer;font:inherit}#th:hover{color:var(--ac);border-color:var(--ac)}
+#sb{position:fixed;left:0;right:0;bottom:0;z-index:200;display:flex;justify-content:space-between;gap:1rem;padding:.35rem clamp(.8rem,3vw,2rem) calc(.35rem + env(safe-area-inset-bottom,0px));background:var(--ac);color:var(--ink);font-size:.74rem;font-weight:500}
+#sb span:nth-child(2){opacity:.75}
+#pg{position:fixed;left:0;top:0;height:2px;width:0;background:var(--ac);z-index:220}
+/* layout */
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:6rem clamp(1rem,4vw,2rem) 5rem}
+.blk{margin-bottom:5rem}
+.cmd{color:var(--tx);font-weight:500;margin-bottom:1.4rem;word-break:break-all}
+.cmd::before{content:"mopy@portfolio ";color:var(--ac)}
+.cmd i{font-style:normal;color:var(--ac2)}.cmd u{text-decoration:none;color:var(--mut)}
+.cmd:not(.done) .t::after,#in:focus+.cur{content:"";display:inline-block;width:.6em;height:1.05em;background:var(--ac);vertical-align:-.2em;margin-left:2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+h2{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:800;margin-bottom:.4rem}
+h2::before{content:"## ";color:var(--ac)}
+.mut{color:var(--mut)}.ac{color:var(--ac)}
+.s{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.2,.8,.3,1),transform .6s cubic-bezier(.2,.8,.3,1);transition-delay:calc(var(--i,0)*70ms)}
+.go .s{opacity:1;transform:none}
+/* hero */
+#ban{font-weight:800;font-size:clamp(.5rem,2.6vw,1.5rem);line-height:1.15;color:var(--ac);text-shadow:0 0 18px color-mix(in srgb,var(--ac) 55%,transparent);overflow-x:hidden;margin-bottom:1rem}
+.h1{font-size:clamp(1.2rem,3vw,1.7rem);font-weight:700;margin-bottom:.6rem}.h1::before{content:"# ";color:var(--ac)}
+.lead{color:var(--mut);max-width:62ch;margin-bottom:1.6rem}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:.2rem 2rem;max-width:520px;padding:1.1rem 1.3rem;background:var(--pn);border:1px solid var(--line);border-radius:.4rem;margin-bottom:1.6rem}
+.facts dt{color:var(--mut)}.facts dd{color:var(--tx)}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ac);margin-right:.5rem;animation:pl 2s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 var(--ac)}70%,100%{box-shadow:0 0 0 9px transparent}}
+.btns{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn{font:700 .85rem var(--m);padding:.65rem 1.2rem;border:1px solid var(--ac);color:var(--ac);background:none;border-radius:.3rem;cursor:pointer;position:relative;overflow:hidden;transition:color .25s,box-shadow .25s}
+.btn::before{content:"";position:absolute;inset:0;background:var(--ac);transform:translateX(-101%);transition:transform .3s;z-index:-1}
+.btn:hover{color:var(--ink);box-shadow:0 0 24px color-mix(in srgb,var(--ac) 35%,transparent)}.btn:hover::before{transform:none}
+.btn{z-index:0;isolation:isolate}
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:1rem}
+.pj{display:block;background:var(--pn);border:1px solid var(--line);border-radius:.4rem;padding:1.1rem 1.2rem 1.2rem;position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s}
+.pj::after{content:"";position:absolute;left:0;right:0;top:-2px;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);transform:translateX(-100%)}
+.pj:hover{border-color:var(--ac);transform:translateY(-5px);box-shadow:0 16px 40px color-mix(in srgb,var(--ac) 12%,transparent)}
+.pj:hover::after{animation:sw 1s}@keyframes sw{to{transform:translateX(100%)}}
+.pj .ix{color:var(--mut);font-size:.72rem}
+.pj h3{font-size:1.02rem;margin:.3rem 0 .5rem}.pj h3::before{content:"> ";color:var(--ac)}
+.pj p{color:var(--mut);font-size:.84rem;margin-bottom:.9rem}
+.tg{font-size:.7rem;color:var(--am);border:1px solid color-mix(in srgb,var(--am) 40%,transparent);padding:.05rem .5rem;border-radius:2rem}
+.op{float:right;font-size:.78rem;color:var(--ac);transition:transform .25s}.pj:hover .op{transform:translateX(4px)}
+/* work */
+.tl{position:relative;padding-left:1.7rem;display:grid;gap:1rem}
+.tl::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1px;background:linear-gradient(var(--ac),transparent);transform:scaleY(0);transform-origin:top;transition:transform 1.6s .3s}
+.go .tl::before{transform:none}
+.jb{position:relative;background:var(--pn);border:1px solid var(--line);border-radius:.4rem;padding:1rem 1.2rem;transition:border-color .3s,transform .3s}
+.jb:hover{border-color:var(--ac);transform:translateX(5px)}
+.jb::before{content:"";position:absolute;left:calc(-1.7rem + 1px);top:1.35rem;width:9px;height:9px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px var(--bg)}
+.jh{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap}.jh b{font-size:1rem}.jh span{color:var(--mut);font-size:.76rem}
+.jr{color:var(--ac2);font-size:.8rem}.jb p{color:var(--mut);font-size:.86rem;margin-top:.3rem}
+.jb a{color:var(--ac);font-size:.78rem;display:inline-block;margin-top:.4rem}.jb a:hover{text-decoration:underline}
+/* src table */
+.tb{border:1px solid var(--line);border-radius:.4rem;overflow:hidden;background:var(--pn);margin-bottom:1.4rem}
+.tr{display:grid;grid-template-columns:1.2fr 3fr .6fr;gap:1rem;padding:.7rem 1.1rem;border-bottom:1px solid var(--line);font-size:.84rem;transition:background .2s}
+.tr:last-child{border:0}.tr:hover:not(.hd){background:var(--pn2)}.hd{color:var(--mut);font-size:.74rem;background:var(--pn2)}
+.tr a{color:var(--ac)}.tr a:hover{text-decoration:underline}.tr span:nth-child(2){color:var(--mut)}
+.sv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:.6rem}
+.sv div{padding:.7rem 1rem;border-left:2px solid var(--ac);background:var(--pn);font-size:.84rem;transition:padding .25s}.sv div:hover{padding-left:1.5rem}.sv b{display:block;color:var(--tx)}.sv span{color:var(--mut);font-size:.8rem}
+/* skills */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.sh{color:var(--ac);margin-bottom:.4rem}.sh::before{content:"==> ";color:var(--ac2)}
+ul{list-style:none;padding:0}li{padding:.1rem 0}li::before{content:"✔ ";color:var(--ac)}
+.bar{margin-bottom:.9rem}.bar header{display:flex;justify-content:space-between;font-size:.82rem}.bar header span:last-child{color:var(--ac)}
+.bt{height:8px;margin-top:.3rem;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 8px)}
+.bt i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--ac) 0 6px,transparent 6px 8px);transition:width 1.6s cubic-bezier(.3,.7,.2,1)}
+.man p{color:var(--mut);max-width:70ch;margin-bottom:.9rem}.man b{color:var(--tx)}
+/* contact */
+form{background:var(--pn);border:1px solid var(--line);border-radius:.4rem;padding:1.3rem}
+label{display:block;color:var(--mut);font-size:.76rem;margin-bottom:.2rem}
+input,select,textarea{width:100%;font:inherit;font-size:.88rem;color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:.3rem;padding:.6rem .8rem;margin-bottom:.9rem;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 14%,transparent)}
+textarea{min-height:100px;resize:vertical}
+#ok{display:none;margin-top:.8rem;color:var(--ac);font-size:.82rem}
+.lk{display:grid;gap:.3rem;margin-top:1.8rem}
+.lk a{display:flex;gap:1rem;padding:.35rem 0;border-bottom:1px dashed var(--line);transition:padding .25s,color .25s}.lk a:hover{padding-left:.8rem;color:var(--ac)}
+.lk b{color:var(--ac2);min-width:5.5rem;font-weight:500}.lk span{word-break:break-all}
+/* exit */
+#log div{margin:.1rem 0}.pr{display:flex;gap:.6rem;align-items:center;margin-top:1rem;flex-wrap:wrap}
+.ps{color:var(--ac);font-weight:500}.pr input{flex:1;min-width:120px;background:none;border:0;padding:0;margin:0;box-shadow:none;color:var(--tx)}.pr input:focus{box-shadow:none}
+.hist{color:var(--mut);font-size:.82rem}
+.bk{margin-top:2.5rem;color:var(--mut);font-size:.78rem}.bk a{color:var(--ac)}
+@media(max-width:700px){.ttl{display:none}.cols{grid-template-columns:1fr}.tr{grid-template-columns:1fr;gap:.1rem}.hd{display:none}#sb span:nth-child(2){display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.s{opacity:1;transform:none}html{scroll-behavior:auto}#boot{display:none}}
+</style>
+</head>
+<body>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div id="pg"></div>
+<div id="boot" aria-hidden="true"><div id="bl"></div></div>
+
+<header id="top">
+  <div class="dots"><i style="background:#ff5f57"></i><i style="background:#ffbd2e"></i><i style="background:#28c840"></i></div>
+  <div class="ttl"><b>mopy</b>@portfolio: ~ zsh</div>
+  <nav><a href="#about">About</a><a href="#projects">Projects</a><a href="#work">Work</a><a href="#skills">Skills</a><a href="#contact">Contact</a></nav>
+  <button id="th" aria-label="Toggle light and dark theme">◐</button>
+</header>
+
+<main>
+<section class="blk" id="about" data-cmd="whoami">
+  <div class="cmd"><i>~</i> <u>%</u> <span class="t"></span></div>
+  <div class="o">
+    <pre id="ban" aria-label="mopy"></pre>
+    <h1 class="h1">Roblox Coder.</h1>
+    <p class="lead">Experienced Roblox scripter. I build gameplay that feels good, test it until it’s solid, help developers get their games ready to sell, and open doors for people who deserve a chance.</p>
+    <dl class="facts">
+      <dt>coding for</dt><dd><span data-n="7">7</span> years</dd>
+      <dt>projects</dt><dd><span data-n="17">17</span>+ shipped</dd>
+      <dt>visits</dt><dd><span data-n="11">11</span>M+ across games</dd>
+      <dt>studios</dt><dd><span data-n="5">5</span>+ teams</dd>
+      <dt>timezone</dt><dd>GMT + 2</dd>
+      <dt>status</dt><dd><span class="live"></span>open to work</dd>
+      <dt>github</dt><dd><a class="ac" href="https://github.com/mopy-dev" target="_blank" rel="noopener">github.com/mopy-dev</a></dd>
+    </dl>
+    <div class="btns"><a class="btn" href="#projects">./projects</a><a class="btn" href="#contact">hire --mopy</a></div>
+  </div>
+</section>
+
+<section class="blk" id="projects" data-cmd="ls ~/projects">
+  <div class="cmd"><i>~</i> <u>%</u> <span class="t"></span></div>
+  <div class="o">
+    <h2>Projects</h2>
+    <p class="mut" style="margin-bottom:1.3rem">6 public. Click a card to watch the showcase video.</p>
+    <div class="grid" id="vg"></div>
+  </div>
+</section>
+
+<section class="blk" id="work" data-cmd="git log --graph ~/work">
+  <div class="cmd"><i>~</i> <u>%</u> <span class="t"></span></div>
+  <div class="o">
+    <h2>Work history</h2>
+    <p class="mut" style="margin-bottom:1.3rem">Studios and groups I’ve contributed to.</p>
+    <div class="tl">
+      <div class="jb"><div class="jh"><b>Passion Project Producers</b><span>2026 – present</span></div><div class="jr">Gameplay engineer / systems scripter</div><p>Building core systems for an MMORPG in development, with a team that pays fairly.</p><a href="https://www.roblox.com/communities/925877383/Passion-Project-Producers#!/about" target="_blank" rel="noopener">view group ↗</a></div>
+      <div class="jb"><div class="jh"><b>Lotus Arts</b><span>2026 – present</span></div><div class="jr">Quality assurance board</div><p>Regular testing on games including CAC and SBF6AM.</p><a href="https://www.roblox.com/communities/32990230/Lotus-Arts#!/about" target="_blank" rel="noopener">view group ↗</a></div>
+      <div class="jb"><div class="jh"><b>German Tax</b><span>2025 – present</span></div><div class="jr">Scripter</div><p>Scripted and maintained systems with a team of 8 developers. Details are under NDA.</p><a href="https://www.roblox.com/communities/988069473/GermanTax#!/about" target="_blank" rel="noopener">view group ↗</a></div>
+      <div class="jb"><div class="jh"><b>Momentum Games Official</b><span>2022 – 2023</span></div><div class="jr">Lead scripter</div><p>Reusable module libraries for UI animation, data management and event handling. Mentored junior scripters and reviewed code.</p></div>
+      <div class="jb"><div class="jh"><b>CrystalForge Studio</b><span>2021 – 2026</span></div><div class="jr">Systems scripter</div><p>Procedural dungeon generation and boss AI for a horror-adventure title that peaked at 50k concurrent players. Focused on server performance and memory.</p><a href="https://www.roblox.com/communities/33321718/CrystalForge-Studio#!/about" target="_blank" rel="noopener">view group ↗</a></div>
+      <div class="jb"><div class="jh"><b>Personal projects</b><span>2019 – present</span></div><div class="jr">Everything, honestly</div><p>Small projects that each taught me something new.</p><a href="https://www.roblox.com/users/4248642418/" target="_blank" rel="noopener">view profile ↗</a></div>
+    </div>
+    <div class="cmd" style="margin:2.6rem 0 1rem"><i>~</i> <u>%</u> ls -la ~/src</div>
+    <div class="tb">
+      <div class="tr hd"><span>name</span><span>about</span><span>lang</span></div>
+      <div class="tr"><a href="https://github.com/mopy-dev/bijbel" target="_blank" rel="noopener">Bijbel</a><span>Responsive CSS styles for biblical texts.</span><span>CSS</span></div>
+      <div class="tr"><a href="https://roblox.com/users/4248642418" target="_blank" rel="noopener">Roblox profile</a><span>Every game and place I’ve built, in one spot.</span><span>Luau</span></div>
+      <div class="tr"><a href="https://youtube.com/@MopyMakesStuff" target="_blank" rel="noopener">MopyMakesStuff</a><span>System showcases and dev videos on YouTube.</span><span>-</span></div>
+    </div>
+    <div class="cmd" style="margin:2rem 0 1rem"><i>~</i> <u>%</u> cat ~/services</div>
+    <div class="sv">
+      <div><b>Backend</b><span>Data, economy, anti-exploit validation</span></div>
+      <div><b>UI / UX</b><span>Responsive, tweened interfaces</span></div>
+      <div><b>Gameplay</b><span>Combat, dashes, rebirths, quests</span></div>
+      <div><b>NPC / AI / web</b><span>Pathfinding, HttpService</span></div>
+      <div><b>QA</b><span>Test passes and clear bug reports</span></div>
+      <div><b>Acquisitions</b><span>Packaging games for the right buyer</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="skills" data-cmd="brew bundle">
+  <div class="cmd"><i>~</i> <u>%</u> <span class="t"></span></div>
+  <div class="o">
+    <h2>Skills</h2>
+    <div class="cols">
+      <div>
+        <div class="sh">Languages</div><ul><li>Luau</li><li>TypeScript</li><li>JavaScript</li><li>CSS</li></ul>
+        <div class="sh" style="margin-top:1rem">Programs</div><ul><li>Roblox Studio</li><li>Rojo</li><li>Visual Studio Code</li></ul>
+      </div>
+      <div>
+        <div class="bar"><header><span>Luau scripting</span><span>97%</span></header><div class="bt"><i data-w="97"></i></div></div>
+        <div class="bar"><header><span>Game architecture</span><span>90%</span></header><div class="bt"><i data-w="90"></i></div></div>
+        <div class="bar"><header><span>UI design and tweening</span><span>88%</span></header><div class="bt"><i data-w="88"></i></div></div>
+        <div class="bar"><header><span>Networking and security</span><span>85%</span></header><div class="bt"><i data-w="85"></i></div></div>
+      </div>
+    </div>
+    <div class="cmd" style="margin:2.4rem 0 1rem"><i>~</i> <u>%</u> man mopy</div>
+    <div class="man"><p><b>mopy</b> is a Roblox developer with over 7 years of hands-on Luau experience. Combat, data management, procedural generation, UI animation and full game architecture are all on the list.</p><p>Solo indie or large studio, the code stays clean, documented and scalable. Away from the keyboard: neurosurgery, nature, and pushing Roblox to its technical limits.</p></div>
+  </div>
+</section>
+
+<section class="blk" id="contact" data-cmd="mail mopy">
+  <div class="cmd"><i>~</i> <u>%</u> <span class="t"></span></div>
+  <div class="o">
+    <h2>Contact</h2>
+    <p class="mut" style="margin-bottom:1.2rem">To: Mopy <span class="ac">(open to work)</span>. I usually reply within 24 hours.</p>
+    <form id="f">
+      <label for="n">Name</label><input id="n" required placeholder="John Doe">
+      <label for="c">Discord or email</label><input id="c" required placeholder="username or email@example.com">
+      <label for="t">Project type</label><select id="t"><option>Backend</option><option>UI / UX</option><option>Gameplay</option><option>NPC / AI / web</option><option>QA</option><option>Full game</option><option>Other</option></select>
+      <label for="m">Message</label><textarea id="m" required placeholder="What you’re building, what you need, budget and timeline"></textarea>
+      <button class="btn" type="submit">Send message</button>
+      <div id="ok">Your email app should open with the message ready to send.</div>
+    </form>
+    <div class="cmd" style="margin:2.2rem 0 .8rem"><i>~</i> <u>%</u> cat ~/.links</div>
+    <div class="lk">
+      <a href="https://github.com/mopy-dev" target="_blank" rel="noopener"><b>github</b><span>github.com/mopy-dev</span></a>
+      <a href="mailto:MohaimenPygerian@gmail.com"><b>mail</b><span>MohaimenPygerian@gmail.com</span></a>
+      <a href="https://discord.com/users/1391076749760270499" target="_blank" rel="noopener"><b>discord</b><span>send me a DM</span></a>
+      <a href="https://youtube.com/@MopyMakesStuff" target="_blank" rel="noopener"><b>youtube</b><span>@MopyMakesStuff</span></a>
+      <a href="https://roblox.com/users/4248642418" target="_blank" rel="noopener"><b>roblox</b><span>roblox.com/users/4248642418</span></a>
+      <a href="https://mopy.netlify.app" target="_blank" rel="noopener"><b>web</b><span>mopy.netlify.app</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="exit" data-cmd="exit">
+  <div class="cmd"><i>~</i> <u>%</u> <span class="t"></span></div>
+  <div class="o">
+    <div class="hist">logout<br>Saving session...<br>...saving history: 11 commands<br>...completed.</div>
+    <div id="log" style="margin-top:1.2rem"><div class="mut">Still here? Type <span class="ac">help</span> below.</div></div>
+    <label class="pr"><span class="ps">mopy@portfolio ~ %</span><input id="in" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command"></label>
+    <div class="bk">© 2026 mopy · all rights reserved · <a href="#about">back to top ↑</a></div>
+  </div>
+</section>
+</main>
+
+<div id="sb"><span id="sec">About</span><span>mopy@portfolio:~</span><span id="pc">0%</span><span>main</span></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia("(prefers-reduced-motion:reduce)").matches,sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/* theme */
+try{const t=localStorage.getItem("th");if(t)document.documentElement.dataset.theme=t}catch(e){}
+function theme(){const d=document.documentElement,n=getComputedStyle(d).colorScheme==="dark"?"light":"dark";d.dataset.theme=n;try{localStorage.setItem("th",n)}catch(e){}return n}
+$("#th").onclick=theme;
+/* videos */
+const V=[["RCNXy8KbrHg","Round Quest System","Rounds / quests","Endless rounds: complete quests one by one, or a disaster strikes."],["V7QNH3emgwM","Dash System","Movement / combat","7-second cooldown shown on the button, animation, and E-key or tap input."],["wQ4nFoxxgV8","Sonic Morphing System","Character / morphing","Simple, cheat-proof morphing that’s easy to expand, shown with Sonic."],["JiCfXE8skhI","Spinning Wheel System","Monetization","Custom wheel framework with free spins, paid spins and fluid tween blending."],["y3xPS1AkosE","Rebirth System","UI / progression","Full rebirth flow: UI, progression and integration with the core systems."],["YHku6UVkikE","Running Part With Catch","Systems / OOP","Engagement mechanic with a catch loop, written with OOP principles."]];
+$("#vg").innerHTML=V.map((v,i)=>`<a class="pj" href="https://youtu.be/${v[0]}" target="_blank" rel="noopener"><span class="ix">[${String(i+1).padStart(2,"0")}/06] README.md</span><h3>${v[1]}</h3><p>${v[3]}</p><span class="tg">${v[2]}</span><span class="op">open ↗</span></a>`).join("");
+/* prep stagger */
+$$(".o").forEach(o=>o.querySelectorAll(":scope>*:not(.grid):not(.tl):not(.lk):not(.cols):not(.sv),.grid>*,.tl>*,.lk>*,.cols>*,.sv>*").forEach(k=>k.classList.add("s")));
+/* typing + reveal */
+async function typeIn(el,t,sp=48){if(RM){el.textContent=t;return}for(const c of t){el.textContent+=c;await sleep(sp+Math.random()*35)}}
+const seen=new WeakSet();
+async function reveal(b){if(seen.has(b))return;seen.add(b);const t=b.querySelector(".cmd .t");if(t)await typeIn(t,b.dataset.cmd);b.querySelector(".cmd").classList.add("done");const o=b.querySelector(".o");o.querySelectorAll(".s").forEach((k,i)=>k.style.setProperty("--i",Math.min(i,14)));o.classList.add("go");
+ if(b.id==="about"){$$("[data-n]").forEach(e=>{const n=+e.dataset.n;if(RM)return;let i=0;const id=setInterval(()=>{e.textContent=++i;if(i>=n)clearInterval(id)},700/n)});}
+ if(b.id==="skills")$$(".bt i").forEach(i=>setTimeout(()=>i.style.width=i.dataset.w+"%",400));
+ setTimeout(()=>o.querySelectorAll(".s").forEach(k=>{k.style.transitionDelay="0s"}),1800)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)reveal(e.target)}),{threshold:.12});
+/* banner decode */
+const BAN=[" _ __ ___   ___  _ __  _   _ ","| '_ ` _ \\ / _ \\| '_ \\| | | |","| | | | | | (_) | |_) | |_| |","|_| |_| |_|\\___/| .__/ \\__, |","                |_|    |___/ "];
+async function decode(){const el=$("#ban");if(RM){el.textContent=BAN.join("\n");return}const R="01#%&$@+*",W=BAN[0].length;for(let f=0;f<=W+10;f++){el.textContent=BAN.map(l=>[...l].map((c,i)=>c===" "?" ":i<f-10?c:i<f?R[Math.random()*R.length|0]:" ").join("")).join("\n");await sleep(26)}el.textContent=BAN.join("\n")}
+/* boot */
+async function boot(){const L=["[ OK ] Loaded profile mopy","[ OK ] Started session mopy@portfolio","[ OK ] Mounted ~/projects (6 public)","[ OK ] Connected to Roblox Studio","[ OK ] Ready. Welcome."];const bl=$("#bl");let skip=false;$("#boot").onclick=()=>skip=true;
+ if(!RM)for(const l of L){if(skip)break;const d=document.createElement("div");d.innerHTML=l.replace("[ OK ]",'[ <span class="ok">OK</span> ]');bl.appendChild(d);await sleep(260)}
+ if(!RM&&!skip)await sleep(250);$("#boot").classList.add("off");decode();$$(".blk").forEach(b=>io.observe(b))}
+boot();
+/* scroll status */
+const names={about:"About",projects:"Projects",work:"Work",skills:"Skills",contact:"Contact",exit:"Exit"},links=$$("#top nav a");
+addEventListener("scroll",()=>{const h=document.documentElement,p=Math.round(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100);$("#pc").textContent=p+"%";$("#pg").style.width=p+"%";let c="about";$$(".blk").forEach(b=>{if(scrollY>=b.offsetTop-260)c=b.id});$("#sec").textContent=names[c];links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+c))},{passive:true});
+/* code rain */
+(function(){if(RM)return;const c=$("#rain"),x=c.getContext("2d"),T="local function end if then return 01 {} () := ~= task.wait pcall".split(" ");let w,h,cols,y;function rs(){w=c.width=innerWidth;h=c.height=innerHeight;cols=Math.floor(w/90)+1;y=Array.from({length:cols},()=>Math.random()*h)}rs();addEventListener("resize",rs);let last=0;
+ (function f(t){if(t-last>60){last=t;x.fillStyle=getComputedStyle(document.documentElement).getPropertyValue("--bg");x.globalAlpha=.12;x.fillRect(0,0,w,h);x.globalAlpha=1;x.font="13px "+getComputedStyle(document.body).fontFamily;x.fillStyle=getComputedStyle(document.documentElement).getPropertyValue("--ac");for(let i=0;i<cols;i++){x.fillText(T[(i*7+(y[i]/16|0))%T.length],i*90+10,y[i]);y[i]+=16;if(y[i]>h&&Math.random()>.96)y[i]=0}}requestAnimationFrame(f)})(0)})();
+/* form */
+$("#f").onsubmit=e=>{e.preventDefault();$("#ok").style.display="block";const b="Name: "+$("#n").value+"\nContact: "+$("#c").value+"\nType: "+$("#t").value+"\n\n"+$("#m").value;location.href="mailto:MohaimenPygerian@gmail.com?subject="+encodeURIComponent("Project inquiry: "+$("#t").value)+"&body="+encodeURIComponent(b)};
+/* interactive prompt */
+const log=$("#log"),say=(t,c)=>{const d=document.createElement("div");d.textContent=t;if(c)d.className=c;log.appendChild(d)},go=id=>{document.getElementById(id).scrollIntoView({behavior:RM?"auto":"smooth"});say("→ ~/"+id,"ac")};
+const CMD={help:()=>say("commands: about  projects  work  skills  contact  theme  clear  sudo hire mopy"),clear:()=>log.innerHTML="",theme:()=>say("theme: "+theme(),"ac"),whoami:()=>go("about"),ls:()=>go("projects"),"sudo hire mopy":()=>{say("[sudo] password for you: ********");setTimeout(()=>{say("permission granted. opening mail...","ac");location.href="mailto:MohaimenPygerian@gmail.com?subject="+encodeURIComponent("Let’s work together")},700)}};
+["about","projects","work","skills","contact"].forEach(k=>CMD[k]=()=>go(k));
+$("#in").addEventListener("keydown",e=>{if(e.key!=="Enter")return;const v=e.target.value.trim().toLowerCase();e.target.value="";if(!v)return;say("% "+v,"mut");(CMD[v]||(()=>say("zsh: command not found: "+v+". try help","ac")))()});
+</script>
+</body>
+</html>
